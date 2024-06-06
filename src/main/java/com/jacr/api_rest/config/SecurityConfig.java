@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +17,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -37,20 +39,43 @@ public class SecurityConfig {
     /* crear el primer componente Cadena de filtros de seguridad
         (Security Filter Chain)
      */
+    /*
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                /*
+
                 .csrf(csrf -> csrf.disable())
+                .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(http -> {
-                    http.requestMatchers(HttpMethod.GET,"");
-                })*/
+                    //Si se hace una petición de tipo GET al siguiente endpint con permitAll significa
+                    //que va a permitir el acceso a todos los que quiera aceder a este desde un metodo get
+                    http.requestMatchers(HttpMethod.GET,"/presentation").permitAll();
+
+                    //Si se hace una petición de tipo GET al siguiente endpoint con hasAuthority tiene que
+                    //tener una autorización y la autorización la definimos en userDetailsServices
+                    http.requestMatchers(HttpMethod.GET, "/api/books").hasAuthority("READ");
+                    //Cualquier otro request diferente al que está especificado lo anterior vas
+                    // a denegar el acceso tambien se utiliza el metodo authenticated()
+                    http.anyRequest().denyAll();
+
+                })
 
                 .build();
     }
+    */
 
+    //SEGUNDA OPCION CON ANOTACINES PARA CREAR COMPONENTE SECURITYFILTERCHAIN LAS ANOTACIONES ES EN CONTROLLER
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        return httpSecurity
+
+                .csrf(csrf -> csrf.disable())
+                .httpBasic(Customizer.withDefaults())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .build();
+    }
     /*Crear el compnente Autentication manager, donde administra la autenticación*/
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -86,7 +111,7 @@ public class SecurityConfig {
         userDetailsList.add(User.withUsername("juan")
                 .password("GaTo2850")
                 .roles("ADMIN")
-                .authorities("READ","CREATE","UPDATE")
+                .authorities("READ","CREATE","UPDATE","DELETE")
                 .build());
         userDetailsList.add(User.withUsername("santiago")
                 .password("2850")
@@ -103,6 +128,7 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder(){
         //NoOpPasswordEncoder no codifica, no encripta, solo es para pruebas, no para produccion en
         //en producción se debe codificar las contraseñas, para encriptar ponermos BCryptPasswordEncoder();
-        return new BCryptPasswordEncoder();
+        return  NoOpPasswordEncoder.getInstance();
+        //return new BCryptPasswordEncoder();
     }
 }

@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpResponse;
@@ -16,6 +17,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
+//Niega la autorización a los endpoints a todos tipos de usuarios
+@PreAuthorize("denyAll()")
 public class BookController {
     private final Logger log= LoggerFactory.getLogger(BookController.class);
     //CRUD SOBRE LA ENTIDAD BOOK
@@ -36,6 +39,7 @@ public class BookController {
     * http://localhost:8080/api/books
     * */
     @GetMapping("/books")
+    @PreAuthorize("hasAuthority('READ')")
     public List<Book> findAll(){
         //recuperar y devolver los libros de bases de datos
         return bookRepository.findAll();
@@ -47,6 +51,7 @@ public class BookController {
     )
     //traer un solo book por id desde las bases de datos
     @GetMapping("/books/{id}")
+    @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<Book> findOneById(@Parameter(description = "Buscar un libro por clave primaria id Long") @PathVariable Long id){
         Optional<Book> bookOpt = bookRepository.findById(id);
         /*
@@ -77,6 +82,7 @@ public class BookController {
     )
     //crear un nuevo book en bases de datos
     @PostMapping("/books")
+    @PreAuthorize("hasAuthority('CREATE')")
     public ResponseEntity<Book> saveBook(@RequestBody  Book book /*Recibir cabecera*/ , @RequestHeader HttpHeaders headers){
         System.out.println(headers.get("User-Agent"));
         //Guardar el libro recibido por parametro en la base de datos
@@ -95,6 +101,7 @@ public class BookController {
     )
     //actualizar un book existente traído por id en bases de datos
     @PutMapping("/books/{id}")
+    @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<?> updateBook(@RequestBody Book book, @PathVariable Long id){
         Optional<Book> bookExistente = bookRepository.findById(id);
         if(bookExistente.isPresent()){
@@ -118,6 +125,7 @@ public class BookController {
     )
     //eliminar un book según el id existente en bases de datos
     @DeleteMapping("/books/{id}")
+    @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<Book> deleteBook(@Parameter(description = "Eliminar un libro por clave primaria id Long") @PathVariable Long id){
         if(!bookRepository.existsById(id)){
             log.warn("Trying to delete a non existent book");
@@ -134,6 +142,7 @@ public class BookController {
     )
     //eliminar todos los books
     @DeleteMapping("/books")
+    @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<Book> deleteAll(){
         bookRepository.deleteAll();
         return ResponseEntity.noContent().build();

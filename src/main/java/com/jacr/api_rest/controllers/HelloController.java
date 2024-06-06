@@ -1,15 +1,21 @@
 package com.jacr.api_rest.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 //RestController para  trabajar con JSON
 @RestController
+//Niega la autorización a los endpoints a todos tipos de usuarios al menos que lo indique
+@PreAuthorize("denyAll()")
 public class HelloController {
+
     @Operation(hidden = true)
     @GetMapping("/presentation")
+    //Permite el acceso a todos los usuarios sin auntenticarse
+    @PreAuthorize("permitAll()")
     public String presentation(){
         return "Hola Bienvenido a mi primera api rest creado con Spring Boot, por favor " +
                 "inicie session para saber mas sobre la funcionalidad del api";
