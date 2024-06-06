@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
     @Operation(hidden = true)
-    @GetMapping("/hello")
-    public String helloWorld(){
-        return "Hola mundo con Juan";
+    @GetMapping("/presentation")
+    public String presentation(){
+        return "Hola Bienvenido a mi primera api rest creado con Spring Boot, por favor " +
+                "inicie session para saber mas sobre la funcionalidad del api";
     }
     /**
      * El siguiente metodo devuelve html, trabajar html dentro de java no es recomendable
