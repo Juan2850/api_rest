@@ -4,18 +4,18 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "permissions")
-public class PermissionModel {
+public class PermissionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true, nullable = false, updatable = false)
     private String name;
 
-    public PermissionModel(Long id, String name) {
+    public PermissionEntity(Long id, String name) {
         this.id = id;
         this.name = name;
     }
-    public PermissionModel(){
+    public PermissionEntity(){
 
     }
 

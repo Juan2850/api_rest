@@ -1,11 +1,13 @@
 package com.jacr.api_rest.models;
 
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class UserModel {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,7 +23,15 @@ public class UserModel {
     @Column(name = "credential_No_Expired")
     private boolean credentialNoExprired;
 
-    public UserModel(Long id, String username, String password, boolean isEnable, boolean accountNoExpired, boolean accountNoLocked, boolean credentialNoExprired) {
+    //Un usuario puede tener muchos roles, varios roles puede tener varios usuarios
+    //relación muchos a muchos unidireccional
+    //agregramos un Set() funciona igual que una lista, usamos Set() para no tener objectos repetidos
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<RolesEntity> rolesEntities = new HashSet<>();
+
+
+    public UserEntity(Long id, String username, String password, boolean isEnable, boolean accountNoExpired, boolean accountNoLocked, boolean credentialNoExprired,Set<RolesEntity> rolesEntities) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -29,9 +39,10 @@ public class UserModel {
         this.accountNoExpired = accountNoExpired;
         this.accountNoLocked = accountNoLocked;
         this.credentialNoExprired = credentialNoExprired;
+        this.rolesEntities = rolesEntities;
     }
 
-    public UserModel(){}
+    public UserEntity(){}
 
     public Long getId() {
         return id;
@@ -87,5 +98,12 @@ public class UserModel {
 
     public void setCredentialNoExprired(boolean credentialNoExprired) {
         this.credentialNoExprired = credentialNoExprired;
+    }
+    public Set<RolesEntity> getRolesEntities() {
+        return rolesEntities;
+    }
+
+    public void setRolesEntities(Set<RolesEntity> rolesEntities) {
+        this.rolesEntities = rolesEntities;
     }
 }
