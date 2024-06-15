@@ -84,10 +84,10 @@ public class SecurityConfig {
 
     //crear el componente un provededor de autenticación que use los usarios de la base de datos
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder());
-        provider.setUserDetailsService(userDetailsService());
+        provider.setUserDetailsService(userDetailsService);
         return provider;
     }
 
@@ -96,16 +96,19 @@ public class SecurityConfig {
      * para hacer pruebas spring security
      * definir usuarios con user y password
      */
+    /*
+
+   /*
     @Bean
     public UserDetailsService userDetailsService(){
-        /*
+
         //crear un solo usuario
         * UserDetails userDetails = User.withUsername("juan")
                 .password("GaTo2850")
                 .roles("ADMIN")
                 .authorities("READ","CREATE","UPDATE")
                 .build();
-        * */
+        **
         //lista de usuarios
         List<UserDetails> userDetailsList = new ArrayList<>();
         userDetailsList.add(User.withUsername("juan")
@@ -121,14 +124,14 @@ public class SecurityConfig {
 
         return new InMemoryUserDetailsManager(userDetailsList);
     }
-
+    */
 
     //crear el componente passwordEncoder que asegura que no almacen contraseñas en texto plano
     @Bean
     public PasswordEncoder passwordEncoder(){
         //NoOpPasswordEncoder no codifica, no encripta, solo es para pruebas, no para produccion en
         //en producción se debe codificar las contraseñas, para encriptar ponermos BCryptPasswordEncoder();
-        return  NoOpPasswordEncoder.getInstance();
-        //return new BCryptPasswordEncoder();
+        //return  NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 }

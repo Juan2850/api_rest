@@ -12,13 +12,13 @@ import java.time.LocalDate;
 public class ApiRestApplication {
 
 	public static void main(String[] args) {
-		//SpringApplication.run(ApiRestApplication.class, args);
+		SpringApplication.run(ApiRestApplication.class, args);
 		/*
 		A continuación es una forma de probar y traer el repositorio utilizando ApplicationContext para interectuar
 		con las bases de datos.
 		pero no es recomendable para eso se hace en los controllers es solamente probar
 		*/
-
+		/*
 		//Inicialización del contexto de la aplicación Spring
 		ApplicationContext context = SpringApplication.run(ApiRestApplication.class, args);
 		//Obtención del bean BookRepository del contexto de Spring (instancia)
@@ -46,6 +46,8 @@ public class ApiRestApplication {
 
 		//recuperar todos los libros
 		System.out.println("Numeros de libros en base de datos: "+ repository.findAll().size());
+
+		 */
 	}
 
 }

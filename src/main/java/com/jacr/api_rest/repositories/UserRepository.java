@@ -1,7 +1,12 @@
 package com.jacr.api_rest.repositories;
 
+import com.jacr.api_rest.models.UserEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
-public interface UserRepository {
+public interface UserRepository extends JpaRepository<UserEntity,Long> {
+    Optional<UserEntity> findUserEntityByUsername(String username);
 }
