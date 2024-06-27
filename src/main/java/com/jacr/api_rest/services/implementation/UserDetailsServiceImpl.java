@@ -1,8 +1,8 @@
-package com.jacr.api_rest.services;
+package com.jacr.api_rest.services.implementation;
 
 
-import com.jacr.api_rest.models.UserEntity;
-import com.jacr.api_rest.repositories.UserRepository;
+import com.jacr.api_rest.persistence.models.UserEntity;
+import com.jacr.api_rest.persistence.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

@@ -1,4 +1,4 @@
-package com.jacr.api_rest.models;
+package com.jacr.api_rest.persistence.models;
 
 import jakarta.persistence.*;
 

@@ -1,6 +1,6 @@
 package com.jacr.api_rest.services;
 
-import com.jacr.api_rest.models.Book;
+import com.jacr.api_rest.persistence.models.Book;
 
 public class BookPriceCalculator {
     public double calculator(Book book){

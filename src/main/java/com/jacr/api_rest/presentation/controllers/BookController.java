@@ -1,7 +1,7 @@
-package com.jacr.api_rest.controllers;
+package com.jacr.api_rest.presentation.controllers;
 
-import com.jacr.api_rest.models.Book;
-import com.jacr.api_rest.repositories.BookRepository;
+import com.jacr.api_rest.persistence.models.Book;
+import com.jacr.api_rest.persistence.repositories.BookRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.slf4j.Logger;
@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Optional;
 

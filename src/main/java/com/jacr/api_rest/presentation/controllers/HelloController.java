@@ -1,4 +1,4 @@
-package com.jacr.api_rest.controllers;
+package com.jacr.api_rest.presentation.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.security.access.prepost.PreAuthorize;

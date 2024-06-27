@@ -1,11 +1,8 @@
-package com.jacr.api_rest.repositories;
+package com.jacr.api_rest.persistence.repositories;
 
-import com.jacr.api_rest.models.Book;
-import com.jacr.api_rest.models.UserEntity;
+import com.jacr.api_rest.persistence.models.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book,Long> {

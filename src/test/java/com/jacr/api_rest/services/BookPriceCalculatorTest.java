@@ -1,6 +1,6 @@
 package com.jacr.api_rest.services;
 
-import com.jacr.api_rest.models.Book;
+import com.jacr.api_rest.persistence.models.Book;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
